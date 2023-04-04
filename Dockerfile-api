@@ -1,0 +1,9 @@
+FROM node:14-alpine
+
+ENV DATABASE_URL=mysql://kawa:root@mariadb:3306/kawa_db
+
+EXPOSE 8080
+
+RUN npm install
+
+CMD npx prisma db push --preview-feature --accept-data-loss && npm start

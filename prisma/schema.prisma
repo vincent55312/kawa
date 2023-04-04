@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://cryptoscope:L3W8mW1y8KUSmyGpjJdviyRcnedtLuQfzYmiw8stCDikDB2NeNwy@mariadb:3306/cryptoscope_db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  pseudo    String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  token     String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
