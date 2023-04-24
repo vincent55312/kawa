@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://cryptoscope:L3W8mW1y8KUSmyGpjJdviyRcnedtLuQfzYmiw8stCDikDB2NeNwy@mariadb:3306/cryptoscope_db"
+  url      = "mysql://root:root@54.38.241.241:3306/kawa_db"
 }
 
 model User {

@@ -1,2 +1,0 @@
-FROM mariadb
-ENV MYSQL_DATABASE=cryptoscope_db
