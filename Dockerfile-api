@@ -1,13 +1,11 @@
 FROM node:14-alpine
 
-WORKDIR /app
+WORKDIR /nest
 
-COPY package*.json ./
+COPY /nest .
 
 RUN npm install --production
 
-COPY . .
-
 EXPOSE 8080
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:prod"]
