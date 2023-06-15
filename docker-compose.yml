@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
     ports:
-      - "88:88"
+      - "90:90"
       - "444:444"
     restart: always
     volumes:
@@ -15,12 +15,12 @@ services:
       - /var/log/nginx
     env_file:
       - .env
-  api:
+  nest:
     build:
       context: .
       dockerfile: Dockerfile-nest
     ports:
-      - "8888:8888"
+      - "9090:9090"
     restart: on-failure
     env_file:
       - .env

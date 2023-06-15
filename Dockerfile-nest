@@ -6,6 +6,6 @@ COPY /nest .
 
 RUN npm install --production
 
-EXPOSE 8888
+EXPOSE 9090
 
 CMD ["npm", "run", "start:prod"]
