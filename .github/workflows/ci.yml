@@ -2,17 +2,20 @@ name: CI
 
 on:
   push:
-    branches:
-      - main  # Remplacez par la branche sur laquelle vous souhaitez déclencher la CI
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Execute Bash script on VPS
-        run: |
-          ssh debian@54.38.241.241 'cd kawa && docker-compose down -v && git pull && docker-compose up --build'
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd kawa
+            git pull
