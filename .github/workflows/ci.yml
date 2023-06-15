@@ -17,5 +17,6 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           port: 22
           script: |
-            cd kawa
-            git pull
+            touch test.txt
+            echo "chat" > test.txt
+            cat test.txt
