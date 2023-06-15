@@ -1,3 +1,6 @@
+# Kawa API nest js + Prisma ORM
+## Dockerized with nginx conf
+
 ## Installation
 
 ```bash

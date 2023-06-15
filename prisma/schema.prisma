@@ -1,10 +1,11 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 model User {
@@ -16,6 +17,13 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
   userType  UserType @default(client)
   orders    Order[]
+}
+
+enum UserType {
+  seller
+  client
+  prospects
+  internal
 }
 
 model Product {
@@ -38,10 +46,4 @@ model Order {
   quantity  Int      @db.Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-}
-
-enum UserType {
-  revendeur
-  client
-  prospects
 }
