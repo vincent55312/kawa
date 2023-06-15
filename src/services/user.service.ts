@@ -5,12 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../orm/prisma.service';
 import { validate } from 'class-validator';
 import { isValidUserType } from '../dto/user/user.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtAuthService } from '../auth/jwt.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtAuthService: JwtAuthService,
+  ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<{ token: string }> {
     const authKey = process.env.AUTH_KEY;
 
     if (authKey !== createUserDto.authKey) {
@@ -33,14 +38,20 @@ export class UserService {
     }
 
     if (isValidUserType(createUserDto.userType)) {
-      return this.prismaService.client.user.create({
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+      const user = await this.prismaService.client.user.create({
         data: {
           id: uuidv4(),
-          password: createUserDto.password,
+          password: hashedPassword,
           pseudo: createUserDto.pseudo,
           userType: createUserDto.userType,
         },
       });
+
+      const token = this.jwtAuthService.generateToken(user);
+
+      return { token };
     } else {
       throw new BadRequestException('Invalid userType');
     }
