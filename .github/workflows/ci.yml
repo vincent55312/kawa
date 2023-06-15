@@ -1,0 +1,18 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main  # Remplacez par la branche sur laquelle vous souhaitez déclencher la CI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Execute Bash script on VPS
+        run: |
+          ssh debian@54.38.241.241 'cd kawa && docker-compose down -v && git pull && docker-compose up --build'
