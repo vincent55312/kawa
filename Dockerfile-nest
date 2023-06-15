@@ -2,8 +2,8 @@ FROM node:14-alpine
 
 COPY . .
 
-RUN npm install
+RUN npm install --production
 
 EXPOSE 9090
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:prod"]
