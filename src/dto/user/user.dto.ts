@@ -15,7 +15,6 @@ export type UserDto = {
   id: string;
   pseudo: string;
   password: string;
-  token: string | null;
   createdAt: Date;
   updatedAt: Date;
   userType: UserType;

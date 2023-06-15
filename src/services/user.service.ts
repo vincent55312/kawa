@@ -1,5 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from '../dto/user/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../orm/prisma.service';
@@ -7,6 +10,8 @@ import { validate } from 'class-validator';
 import { isValidUserType } from '../dto/user/user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtAuthService } from '../auth/jwt.service';
+import { LoginUserDto } from '../dto/user/login-user.dto';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -16,6 +21,11 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<{ token: string }> {
+    const errors = await validate(createUserDto);
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+
     const authKey = process.env.AUTH_KEY;
 
     if (authKey !== createUserDto.authKey) {
@@ -30,11 +40,6 @@ export class UserService {
 
     if (userExists) {
       throw new BadRequestException('User with the same pseudo already exists');
-    }
-
-    const errors = await validate(createUserDto);
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
     }
 
     if (isValidUserType(createUserDto.userType)) {
@@ -55,5 +60,39 @@ export class UserService {
     } else {
       throw new BadRequestException('Invalid userType');
     }
+  }
+
+  async loginUser(loginUserDto: LoginUserDto): Promise<{ token: string }> {
+    const errors = await validate(loginUserDto);
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+
+    const userToken = this.jwtAuthService.verifyToken(loginUserDto.token);
+
+    if (userToken.pseudo !== loginUserDto.pseudo) {
+      throw new UnauthorizedException('Invalid authentication');
+    }
+
+    const userExists = await this.prismaService.client.user.findUnique({
+      where: {
+        pseudo: loginUserDto.pseudo,
+      },
+    });
+
+    if (!userExists) {
+      throw new BadRequestException('User no existing');
+    }
+
+    const passwordMatch = await compare(
+      loginUserDto.password,
+      userExists.password,
+    );
+    if (!passwordMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const token = this.jwtAuthService.generateToken(userExists);
+    return { token };
   }
 }
