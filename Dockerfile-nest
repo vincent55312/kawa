@@ -1,8 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /nest
-
-COPY /nest .
+COPY . .
 
 RUN npm install --production
 
