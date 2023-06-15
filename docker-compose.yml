@@ -18,9 +18,9 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile-api
+      dockerfile: Dockerfile-nest
     ports:
-      - "8080:8080"
+      - "8888:8888"
     restart: on-failure
     env_file:
       - .env
