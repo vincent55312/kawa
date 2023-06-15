@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
     ports:
-      - "80:80"
+      - "88:88"
       - "444:444"
     restart: always
     volumes:
