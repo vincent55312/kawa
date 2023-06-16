@@ -27,13 +27,12 @@ export class UserService {
     }
 
     const authKey = process.env.AUTH_KEY;
-    console.log(process.env.DATABASE_URL);
 
     if (authKey !== createUserDto.authKey) {
       throw new BadRequestException('Invalid authentication key');
     }
 
-    const userExists = await this.prismaService.client.user.findUnique({
+    const userExists = await this.prismaService.user.findUnique({
       where: {
         pseudo: createUserDto.pseudo,
       },
@@ -46,7 +45,7 @@ export class UserService {
     if (isValidUserType(createUserDto.userType)) {
       const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
-      const user = await this.prismaService.client.user.create({
+      const user = await this.prismaService.user.create({
         data: {
           id: uuidv4(),
           password: hashedPassword,
@@ -75,7 +74,7 @@ export class UserService {
       throw new UnauthorizedException('Invalid authentication');
     }
 
-    const userExists = await this.prismaService.client.user.findUnique({
+    const userExists = await this.prismaService.user.findUnique({
       where: {
         pseudo: loginUserDto.pseudo,
       },

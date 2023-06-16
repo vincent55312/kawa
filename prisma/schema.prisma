@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:Kz1NnwUZZpuqEGDf64WpdaN7824ngiV1PTpYcVF2Ugwtg8EZcpqt@54.38.241.241:3306/kawa_db?sslmode=prefer"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
