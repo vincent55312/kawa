@@ -17,6 +17,7 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           port: 22
           script: |
-            touch test.txt
-            echo "chat" > test.txt
-            cat test.txt
+            cd kawa
+            docker-compose down -v
+            git pull
+            docker-compose up --build -d
