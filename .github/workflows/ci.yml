@@ -20,4 +20,4 @@ jobs:
             cd kawa
             docker-compose down -v
             git pull
-            docker-compose up --build -d
+            docker-compose up --build -d --no-cache
