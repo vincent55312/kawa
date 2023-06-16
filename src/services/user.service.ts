@@ -27,6 +27,7 @@ export class UserService {
     }
 
     const authKey = process.env.AUTH_KEY;
+    console.log(authKey);
 
     if (authKey !== createUserDto.authKey) {
       throw new BadRequestException('Invalid authentication key');
