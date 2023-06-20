@@ -62,17 +62,16 @@ export class UserService {
     }
   }
 
-  async loginUser(loginUserDto: LoginUserDto): Promise<{ token: string }> {
+  async loginUser(
+    loginUserDto: LoginUserDto,
+    bearerToken: string,
+  ): Promise<{ token: string }> {
     const errors = await validate(loginUserDto);
     if (errors.length > 0) {
       throw new BadRequestException(errors);
     }
 
-    const userToken = this.jwtAuthService.verifyToken(loginUserDto.token);
-
-    if (userToken.pseudo !== loginUserDto.pseudo) {
-      throw new UnauthorizedException('Invalid authentication');
-    }
+    this.jwtAuthService.verifyToken(bearerToken);
 
     const userExists = await this.prismaService.user.findUnique({
       where: {

@@ -10,7 +10,7 @@ import { CheckController } from './controllers/check.controller';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '8h' },
+      signOptions: { expiresIn: '30d' },
     }),
   ],
   controllers: [UserController, CheckController],
