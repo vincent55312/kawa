@@ -23,6 +23,7 @@ enum UserType {
   client
   prospects
   internal
+  test
 }
 
 model Product {
