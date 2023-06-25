@@ -2,13 +2,19 @@ name: CD deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: npm run test
+
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
