@@ -7,6 +7,8 @@ import { JwtAuthService } from './auth/jwt.service';
 import { CheckController } from './controllers/check.controller';
 import { ProductController } from './controllers/product.controller';
 import { ProductService } from './services/product.service';
+import { OrderController } from './controllers/order.controller';
+import { OrderService } from './services/order.service';
 
 @Module({
   imports: [
@@ -15,7 +17,18 @@ import { ProductService } from './services/product.service';
       signOptions: { expiresIn: '8h' },
     }),
   ],
-  controllers: [UserController, CheckController, ProductController],
-  providers: [UserService, PrismaService, JwtAuthService, ProductService],
+  controllers: [
+    UserController,
+    CheckController,
+    ProductController,
+    OrderController,
+  ],
+  providers: [
+    UserService,
+    PrismaService,
+    JwtAuthService,
+    ProductService,
+    OrderService,
+  ],
 })
 export class AppModule {}

@@ -19,7 +19,6 @@ export class ProductController {
     return await this.productService.getProduct(getProductDto.id);
   }
 
-
   @Get('/')
   async getAllProducts() {
     return await this.productService.getAllProducts();
