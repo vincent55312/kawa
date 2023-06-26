@@ -97,7 +97,7 @@ describe('UserService', () => {
       );
     });
 
-    it('should throw BadRequestException if user with the same pseudo already exists', async () => {
+    it('should throw BadRequestException iff user with the same pseudo already exists', async () => {
       // Arrange
       const createUserDto: CreateUserDto = {
         authKey: 'validAuthKey',
