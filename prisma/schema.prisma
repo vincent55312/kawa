@@ -16,6 +16,7 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
   userType  UserType @default(client)
   orders    Order[]
+  token     String   @unique @default(cuid())
 }
 
 enum UserType {
@@ -34,6 +35,7 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   orders      Order[]
+  photo       String?
 }
 
 model Order {

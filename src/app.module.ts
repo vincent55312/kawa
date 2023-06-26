@@ -5,6 +5,8 @@ import { PrismaService } from './orm/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthService } from './auth/jwt.service';
 import { CheckController } from './controllers/check.controller';
+import { ProductController } from './controllers/product.controller';
+import { ProductService } from './services/product.service';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { CheckController } from './controllers/check.controller';
       signOptions: { expiresIn: '8h' },
     }),
   ],
-  controllers: [UserController, CheckController],
-  providers: [UserService, PrismaService, JwtAuthService],
+  controllers: [UserController, CheckController, ProductController],
+  providers: [UserService, PrismaService, JwtAuthService, ProductService],
 })
 export class AppModule {}
