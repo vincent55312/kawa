@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtAuthService } from '../auth/jwt.service';
 import { LoginUserDto } from '../dto/user/login-user.dto';
 import { compare } from 'bcrypt';
+import { LoginUserQrcodeDto } from '../dto/user/login-user-qrcode.dto';
 
 @Injectable()
 export class UserService {
@@ -89,6 +90,28 @@ export class UserService {
     );
     if (!passwordMatch) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const token = this.jwtAuthService.generateToken(userExists);
+    return { token };
+  }
+
+  async loginUserQrcode(
+    loginUserQrcodeDto: LoginUserQrcodeDto,
+  ): Promise<{ token: string }> {
+    const errors = await validate(loginUserQrcodeDto);
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+
+    const userExists = await this.prismaService.user.findUnique({
+      where: {
+        passphrase: loginUserQrcodeDto.passphrase,
+      },
+    });
+
+    if (!userExists) {
+      throw new BadRequestException('User no existing');
     }
 
     const token = this.jwtAuthService.generateToken(userExists);
